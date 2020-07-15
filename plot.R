@@ -18,7 +18,7 @@ peds <- tribble(
   mutate(new_negatives = negative - lead(negative, 1)) %>%
   mutate(percent_pos = new_positives/new_tests) 
 
-peds %>% 
+g_test <- peds %>% 
   pivot_longer(cols = c(new_positives, new_negatives), 
                names_to = "status") %>%
   mutate(status = 
@@ -61,3 +61,6 @@ peds %>%
     )
   ) + 
   labs(x = NULL, y = NULL)
+
+ggsave(here::here("plots", "testing.png"), 
+       g_test, width = 5, height = 4, dpi = 150, scale = 1.5)

@@ -35,19 +35,24 @@ g_test <- peds %>%
       Positive = "#440154"
     )
   ) +
+  geom_text(data = . %>% filter(status == "Positive"),
+            mapping = aes(label=scales::percent(percent_pos)),
+            color = "white",
+            position = position_dodge(width=0.9), 
+            vjust = 1.5) + 
   scale_y_continuous(labels = grkmisc::format_pretty_num()) +
   scale_x_datetime(date_breaks = "1 week", date_labels = "%b %d", expand = expansion()) +
   theme_minimal(14) +
   theme(
     strip.text = element_text(face = "bold", size = 18),
-    legend.position = c(0.1, .9),
+    legend.position = c(0.1, .83),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
     panel.grid.minor.y = element_blank(),
     ) + 
   plot_annotation(
     title = "State of Florida pediatric COVID-19 test results",
-    subtitle = "DOH reporting for ages 0-17 available beginning 2020-06-12",
+    subtitle = "New tests and percent positivity for ages 0-17 beginning 2020-06-12",
     caption = glue::glue(
       "Source: Florida DOH",
       "github.com/tgerke/pediatric-covid19-fl",

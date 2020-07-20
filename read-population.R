@@ -8,7 +8,7 @@ pop <- readxl::read_xlsx(
   skip = 1
 )
 
-pop %>%
+pop <- pop %>%
   rename(
     County = "and State",
     Age = "Age/Sex"
@@ -22,7 +22,21 @@ pop %>%
     )
   ) %>%
   fill(County) %>% 
-  filter(Age %in% c("0-4", "5-17")) %>% 
+  filter(!is.na(Age)) %>%
   group_by(County) %>%
-  slice(1:2) %>%
-  ungroup()
+  slice(1:8) %>%
+  ungroup() %>%
+  mutate(County = str_to_title(County),
+         County = str_remove_all(County, "[*]"),
+         Age = relevel(as_factor(Age), 
+                       "Total",
+                       "0-4",
+                       "5-17",
+                       "18-24",
+                       "25-54",
+                       "55-64",
+                       "65-79",
+                       "80+")) %>%
+  rename("Population estimate 2020" = '2020')
+
+write_csv(pop, here::here("data", "FL-population-2020.csv"))

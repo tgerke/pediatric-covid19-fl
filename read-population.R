@@ -40,3 +40,4 @@ pop <- pop %>%
   rename("Population estimate 2020" = '2020')
 
 write_csv(pop, here::here("data", "FL-population-2020.csv"))
+write_rds(pop, here::here("data", "FL-population-2020.rds"))

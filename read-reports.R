@@ -61,3 +61,4 @@ write_reports <- function(counties_obj, obj_names) {
 }
 
 walk2(counties, names(counties), write_reports)
+write_rds(counties, here::here("data", "county-testing.rds"))

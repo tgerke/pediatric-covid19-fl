@@ -1,4 +1,14 @@
 County,Cases,Negative,Total,Percent Positive
+Alachua,61,523,584,10.4%
+Baker,5,51,56,8.9%
+Bay,30,88,118,25.4%
+Bradford,7,57,64,10.9%
+Brevard,124,706,830,14.9%
+Broward,1164,4034,5198,22.4%
+Calhoun,1,10,11,9.1%
+Charlotte,26,123,149,17.4%
+Citrus,23,149,172,13.4%
+Clay,34,406,440,7.7%
 Collier,563,886,1449,38.9%
 Columbia,34,200,234,14.5%
 Dade,1950,4621,6571,29.7%
@@ -24,16 +34,16 @@ Jackson,24,79,103,23.3%
 Jefferson,5,27,32,15.6%
 Lafayette,2,7,9,22.2%
 Lake,94,567,661,14.2%
-Line,List,of,13,Multisystem
-County,Age,Sex,Race,Ethnicity
-Duval,11,M,White,Non-Hispanic
-Dade,14,M,Black,Non-Hispanic
-Clay,6,F,White,Non-Hispanic
-Broward,6,F,White,Non-Hispanic
-Dade,8,M,Black,Non-Hispanic
-Dade,1,M,White,Hispanic
-Dade,9,F,White,Hispanic
-Dade,6,M,Black,Non-Hispanic
+Lee,475,734,1209,39.3%
+Leon,82,599,681,12.0%
+Levy,7,70,77,9.1%
+Liberty,4,10,14,28.6%
+Madison,35,94,129,27.1%
+Manatee,332,597,929,35.7%
+Marion,45,495,540,8.3%
+Martin,265,251,516,51.4%
+Monroe,19,116,135,14.1%
+Nassau,16,126,142,11.3%
 Okaloosa,48,338,386,12.4%
 Okeechobee,71,104,175,40.6%
 Orange,698,2870,3568,19.6%
@@ -58,4 +68,3 @@ Wakulla,4,55,59,6.8%
 Walton,29,84,113,25.7%
 Washington,3,33,36,8.3%
 Total,11515,36096,47611,24.2%
-Inflammatory,Syndrome,in,Children,(MIS-C)

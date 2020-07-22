@@ -13,6 +13,9 @@ txt <- files %>%
   map(ingest_pdf)
 
 process_counties <- function(txt) {
+  row_start <- which(str_detect(txt, "Alachua"))[1] - 1
+  row_end <- which(str_detect(txt, "Lake"))[1]
+  
   counties <- txt %>%
     str_squish() %>%
     str_remove_all(",") %>%
@@ -21,7 +24,8 @@ process_counties <- function(txt) {
     str_replace("St. Johns", "St.-Johns") %>%
     str_replace("St. Lucie", "St.Lucie") %>%
     str_replace("Indian River", "Indian-River") %>%
-    read_delim(delim = " ", skip = 27, n_max = 35, col_names = FALSE)
+    read_delim(delim = " ", skip = row_start, n_max = row_end - row_start, 
+               col_names = FALSE)
 
   counties <- bind_rows(
     counties %>%

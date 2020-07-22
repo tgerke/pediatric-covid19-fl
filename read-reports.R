@@ -3,6 +3,7 @@ library(tidyverse)
 files <- fs::dir_ls(
   here::here("reports")
 )
+files <- files[-grep("archived", files)]
 
 ingest_pdf <- function(file) {
   pdftools::pdf_text(file) %>%

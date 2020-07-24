@@ -23,7 +23,7 @@ pop <- pop %>%
   tally(`Population estimate 2020`)
 
 per_capita <- map(counties, ~ left_join(pop, .x, by = "County")) %>%
-  map(~ mutate(.x, "Tests per capita" = Total / n))
+  map(~ mutate(.x, "Tests per capita" = cumulative_total / n))
 
 dates <- names(per_capita) %>%
   str_sub(start = -12, end = -5)
@@ -37,8 +37,9 @@ per_capita <- map2(
 
 per_capita <- per_capita %>%
   group_by(County) %>%
-  mutate(new_positives = Cases - lag(Cases, 1),
-         new_tests = Total - lag(Total, 1),
+  mutate(new_positives = cumulative_cases - lag(cumulative_cases, 1),
+         new_negatives = cumulative_negative - lag(cumulative_negative, 1),
+         new_tests = cumulative_total - lag(cumulative_total, 1),
          percent_pos = new_positives/new_tests,
          new_tests_per_capita = new_tests/n) %>% 
   ungroup()
@@ -61,7 +62,8 @@ theme_set(
 
 per_capita %>%
   filter(date == lubridate::ymd("2020-07-17")) %>%
-  rename(Positive = Cases) %>%
+  rename(Positive = new_positives,
+         Negative = new_negatives) %>%
   pivot_longer(cols = c(Positive, Negative), 
                names_to = "status") %>%
   ggplot() +
@@ -85,7 +87,7 @@ per_capita %>%
   theme_minimal(14) +
   labs(
     title = "State of Florida pediatric COVID-19 test results",
-    subtitle = "New tests and percent positivity for ages 0-17 beginning 2020-06-12",
+    subtitle = "New tests for ages 0-17 for the week of 2020-07-10",
     caption = glue::glue(
       "Source: Florida DOH",
       "github.com/tgerke/pediatric-covid19-fl",

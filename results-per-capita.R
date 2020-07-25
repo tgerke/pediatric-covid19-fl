@@ -1,5 +1,6 @@
 library(tidyverse)
 library(ggtext)
+library(ggiraph)
 
 pop <- read_rds(here::here("data/FL-population-2020.rds"))
 counties <- read_rds(here::here("data/county-testing.rds"))
@@ -60,36 +61,86 @@ theme_set(
           plot.title.position = "plot")
 )
 
-per_capita %>%
-  filter(date == lubridate::ymd("2020-07-17")) %>%
-  rename(Positive = new_positives,
-         Negative = new_negatives) %>%
-  pivot_longer(cols = c(Positive, Negative), 
-               names_to = "status") %>%
-  ggplot() +
-  aes(x = County, y = value, fill = status) + 
-  geom_bar(stat = "identity", position = "stack") + 
-  coord_flip() + 
-  labs(fill = NULL) +
-  scale_fill_manual(
-    values = c(
-      Negative = "#dddddd",
-      Positive = "#440154"
-    )
-  ) +
-  # geom_text(data = . %>% filter(status == "Positive"),
-  #           mapping = aes(label=scales::percent(percent_pos)),
-  #           color = "white",
-  #           position = position_dodge(width=0.9), 
-  #           vjust = 1.5) + 
-  scale_y_continuous(labels = grkmisc::format_pretty_num()) +
-  #scale_x_datetime(date_breaks = "1 week", date_labels = "%b %d", expand = expansion()) +
-  theme_minimal(14) +
+g_new_tests <- per_capita %>%
+  filter(!is.na(new_tests)) %>%
+  ggplot() + 
+  aes(x = date, y = new_tests, group = County) +
+  geom_line_interactive(aes(tooltip = County)) +
   labs(
     title = "State of Florida pediatric COVID-19 test results",
-    subtitle = "New tests for ages 0-17 for the week of 2020-07-10",
+    subtitle = "New tests by county for ages 0-17",
     caption = glue::glue(
       "Source: Florida DOH",
       "github.com/tgerke/pediatric-covid19-fl",
-      .sep = "\n"),
+      .sep = "<br>"),
     x = NULL, y = NULL) 
+
+girafe(ggobj = g_new_tests)
+
+g_tests_per_capita <- per_capita %>%
+  filter(!is.na(new_tests)) %>%
+  ggplot() + 
+  aes(x = date, y = `Tests per capita`, group = County) +
+  geom_line_interactive(aes(tooltip = County)) + 
+  labs(
+    title = "State of Florida pediatric COVID-19 test results",
+    subtitle = "Cumulative tests per capita by county for ages 0-17",
+    caption = glue::glue(
+      "Source: Florida DOH",
+      "github.com/tgerke/pediatric-covid19-fl",
+      .sep = "<br>"),
+    x = NULL, y = NULL) 
+
+girafe(ggobj = g_tests_per_capita)
+
+g_new_tests_per_capita <- per_capita %>%
+  filter(!is.na(new_tests)) %>%
+  ggplot() + 
+  aes(x = date, y = new_tests_per_capita, group = County) +
+  geom_line_interactive(aes(tooltip = County)) +
+  labs(
+    title = "State of Florida pediatric COVID-19 test results",
+    subtitle = "New tests per capita by county for ages 0-17",
+    caption = glue::glue(
+      "Source: Florida DOH",
+      "github.com/tgerke/pediatric-covid19-fl",
+      .sep = "<br>"),
+    x = NULL, y = NULL) 
+
+girafe(ggobj = g_new_tests_per_capita)
+
+g_new_percent_pos <- per_capita %>%
+  filter(!is.na(new_tests)) %>%
+  filter(!is.nan(percent_pos)) %>%
+  filter(!is.infinite(percent_pos)) %>%
+  ggplot() + 
+  aes(x = date, y = percent_pos, group = County) +
+  geom_line_interactive(aes(tooltip = County)) +
+  labs(
+    title = "State of Florida pediatric COVID-19 test results",
+    subtitle = "Percent positivity of new tests by county for ages 0-17",
+    caption = glue::glue(
+      "Source: Florida DOH",
+      "github.com/tgerke/pediatric-covid19-fl",
+      .sep = "<br>"),
+    x = NULL, y = NULL) 
+
+girafe(ggobj = g_new_percent_pos)
+
+g_cumulative_percent_pos <- per_capita %>%
+  filter(!is.na(new_tests)) %>%
+  mutate(cumulative_perc_pos = str_remove(cumulative_perc_pos, "%"), 
+         cumulative_perc_pos = as.numeric(cumulative_perc_pos)) %>%
+  ggplot() + 
+  aes(x = date, y = cumulative_perc_pos, group = County) +
+  geom_line_interactive(aes(tooltip = County)) +
+  labs(
+    title = "State of Florida pediatric COVID-19 test results",
+    subtitle = "Cumulative percent positivity by county for ages 0-17",
+    caption = glue::glue(
+      "Source: Florida DOH",
+      "github.com/tgerke/pediatric-covid19-fl",
+      .sep = "<br>"),
+    x = NULL, y = NULL) 
+
+girafe(ggobj = g_cumulative_percent_pos)

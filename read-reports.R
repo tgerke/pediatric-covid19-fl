@@ -33,19 +33,19 @@ process_counties <- function(txt) {
       select(X1:X5) %>%
       rename(
         County = X1,
-        cumulative_cases = X2,
-        cumulative_negative = X3,
-        cumulative_total = X4,
-        cumulative_perc_pos = X5
+        cases = X2,
+        negative = X3,
+        total = X4,
+        perc_pos = X5
       ),
     counties %>%
       select(X6:X10) %>%
       rename(
         County = X6,
-        cumulative_cases = X7,
-        cumulative_negative = X8,
-        cumulative_total = X9,
-        cumulative_perc_pos = X10
+        cases = X7,
+        negative = X8,
+        total = X9,
+        perc_pos = X10
       )
   ) %>%
     filter(!is.na(County)) %>%

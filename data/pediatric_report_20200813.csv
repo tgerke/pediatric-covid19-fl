@@ -1,4 +1,4 @@
-County,cumulative_cases,cumulative_negative,cumulative_total,cumulative_perc_pos
+County,cases,negative,total,perc_pos
 Alachua,354,3719,4073,8.7%
 Baker,37,281,318,11.6%
 Bay,249,1648,1897,13.1%

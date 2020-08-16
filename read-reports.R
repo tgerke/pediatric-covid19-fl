@@ -4,19 +4,13 @@ files <- fs::dir_ls(
   here::here("reports")
 )
 files <- files[-grep("archived", files)]
-# reports change on 20200814 to only give 2 week windows instead of daily
-# separate processing needed for these
-original_files <- 
-  files[(files %>% str_sub(-12, -5) %>% as.numeric() < 20200814)]
-new_files <- 
-  files[(files %>% str_sub(-12, -5) %>% as.numeric() > 20200813)]
 
 ingest_pdf <- function(file) {
   pdftools::pdf_text(file) %>%
     read_lines()
 }
 
-txt <- original_files %>%
+txt <- files %>%
   map(ingest_pdf)
 
 process_counties <- function(txt) {

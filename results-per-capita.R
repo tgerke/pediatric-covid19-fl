@@ -61,6 +61,22 @@ theme_set(
           plot.title.position = "plot")
 )
 
+g_new_positives <- per_capita %>%
+  filter(!is.na(new_positives)) %>%
+  ggplot() + 
+  aes(x = date, y = new_positives, group = County) +
+  geom_line_interactive(aes(tooltip = County)) +
+  labs(
+    title = "State of Florida pediatric COVID-19 test results",
+    subtitle = "New positives by county for ages 0-17",
+    caption = glue::glue(
+      "Source: Florida DOH",
+      "github.com/tgerke/pediatric-covid19-fl",
+      .sep = "<br>"),
+    x = NULL, y = NULL) 
+
+girafe(ggobj = g_new_positives)
+
 g_new_tests <- per_capita %>%
   filter(!is.na(new_tests)) %>%
   ggplot() + 
